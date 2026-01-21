@@ -1,122 +1,120 @@
-# Sistema de Contratação de Docente
+---
 
-Sistema desenvolvido com JavaFX para gerenciar o processo de contratação temporária de docentes em uma faculdade.
+# User Management API
+
+API REST desenvolvida com **Java e Spring Boot** para gerenciamento de usuários, seguindo boas práticas de **arquitetura em camadas**, **uso de DTOs** e **documentação com Swagger/OpenAPI**.
+
+O projeto foi desenvolvido com foco em **backend Java** e serve como base para evolução futura, como autenticação, autorização e regras de negócio mais complexas.
 
 ---
 
 ## 📌 Funcionalidades
 
-### 🔧 CRUD Completo
-- **Cursos**: Cadastrar, buscar, atualizar e remover cursos  
-- **Disciplinas**: Gerenciar disciplinas vinculadas a cursos  
-- **Professores**: Cadastrar professores com pontuação  
-- **Inscrições**: Gerenciar inscrições em processos seletivos  
+### 🔧 Operações Principais
 
-### 🔍 Consultas Especiais
-- **Consulta de Inscritos**: Lista professores inscritos em uma disciplina, ordenados por pontuação (QuickSort)  
-- **Processos Abertos**: Exibe todas as disciplinas com processos abertos usando HashTable  
+* **Criar Usuário**: Cadastro de usuários via requisição HTTP
+* **Listar Usuários**: Retorna todos os usuários cadastrados
+* **Validação de Dados**: Validações de entrada com Jakarta Validation
+* **Persistência**: Armazenamento de dados usando Spring Data JPA
+
+### 🔍 Consultas Disponíveis
+
+* **Listagem Geral**: Retorna usuários cadastrados no sistema
+* **Status da API**: Endpoint simples para verificar se a API está ativa
 
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```text
-/contratacao-docente
-├── csv/
-│   ├── disciplinas.csv
-│   ├── cursos.csv
-│   ├── professores.csv
-│   └── inscricoes.csv
-│
-├── doc/
-│   └── diagrama.png
-│
-├── lib/
-│   ├── ListaSimples.jar
-│   ├── Fila.jar
-│   └── HashTable.jar
-│
+/user-management-api
 ├── src/
-│   ├── application/
-│   │   └── MainApp.java
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── Silent/
+│   │   │           └── demo/
+│   │   │               ├── controller/
+│   │   │               │   └── UserController.java
+│   │   │               │
+│   │   │               ├── service/
+│   │   │               │   └── UserService.java
+│   │   │               │
+│   │   │               ├── repository/
+│   │   │               │   └── UserRepository.java
+│   │   │               │
+│   │   │               ├── dto/
+│   │   │               │   ├── DtoRequest.java
+│   │   │               │   └── DtoResponse.java
+│   │   │               │
+│   │   │               ├── model/
+│   │   │               │   └── User.java
+│   │   │               │
+│   │   │               └── configuration/
+│   │   │                   └── OpenApiConfiguration.java
+│   │   │
+│   │   └── resources/
+│   │       └── application.properties
 │   │
-│   ├── controller/
-│   │   ├── CursoController.java
-│   │   ├── DisciplinaController.java
-│   │   ├── ProfessorController.java
-│   │   └── InscricaoController.java
-│   │
-│   ├── persistence/
-│   │   ├── CursoRepository.java
-│   │   ├── DisciplinaRepository.java
-│   │   ├── ProfessorRepository.java
-│   │   └── InscricaoRepository.java
-│   │
-│   ├── model/
-│   │   ├── Curso.java
-│   │   ├── Disciplina.java
-│   │   ├── Professor.java
-│   │   └── Inscricao.java
-│   │
-│   ├── view/
-│   │   ├── CursoView.java
-│   │   ├── DisciplinaView.java
-│   │   ├── ProfessorView.java
-│   │   ├── InscricaoView.java
-│   │   ├── ConsultaInscritos.java
-│   │   └── ConsultaProcessosAbertos.java
-│   │
-│   └── util/
-│       └── QuickSort.java
+│   └── test/
+│
+└── pom.xml
 ```
 
 ---
 
 ## 🧩 Regras de Negócio
 
-1. Apenas professores cadastrados podem fazer inscrições  
-2. Ao remover uma disciplina, todas as inscrições relacionadas são excluídas  
-3. Operações de atualização e remoção usam listas encadeadas  
-4. Consultas (buscar) usam filas populadas dos arquivos CSV  
-5. Arquivos CSV não ficam com linhas vazias após operações  
+1. A API utiliza **DTOs** para entrada e saída de dados
+2. Entidades JPA **não são expostas diretamente** ao cliente
+3. O ID do usuário é gerado automaticamente pelo sistema
+4. Campos de entrada passam por validação antes da persistência
+5. Dados sensíveis (ex: senha) **não são retornados nas respostas**
 
 ---
 
-## 📚 Estruturas de Dados Utilizadas
+## 📚 Padrões e Conceitos Utilizados
 
-- ListaSimples  
-- Fila
-- QuickSort  
-- HashTable  
+* DTO (Data Transfer Object)
+* Arquitetura em camadas
+* Injeção de dependência por construtor
+* Spring Data JPA
+* Hibernate ORM
+* OpenAPI / Swagger
+* Jakarta Validation
 
 ---
 
 ## ▶️ Como Executar
 
-1. Certifique-se de ter as bibliotecas na pasta `lib/`  
-2. Adicione as bibliotecas ao **build path** do projeto  
-3. Execute a classe **MainApp.java**  
+1. Clone o repositório
+2. Abra o projeto em uma IDE compatível com Java
+3. Execute a aplicação Spring Boot
+4. Acesse a documentação da API em:
+
+```
+http://localhost:8080/swagger-ui.html
+```
 
 ---
 
-## 🏗️ Arquitetura
+## 📖 Documentação da API
 
-O sistema segue o padrão MVC:
+A API é documentada automaticamente com **Swagger (OpenAPI)**, permitindo:
 
-- **Model**: Entidades de domínio  
-- **View**: Interface gráfica JavaFX  
-- **Controller**: Lógica de negócio  
-- **Persistence**: Repository (acesso aos arquivos CSV)  
+* Visualizar todos os endpoints
+* Ver exemplos de requisição e resposta
+* Testar a API diretamente pelo navegador
+
+---
+
+## 💡 Observações Técnicas
+
+* Arquitetura organizada para facilitar manutenção e evolução
+* Uso de Streams para mapeamento Entity → DTO
+* Código escrito com foco em legibilidade e boas práticas
+* Projeto preparado para expansão com Spring Security
 
 ---
 
-## ⚙️ Observações Técnicas
 
-- Os arquivos CSV são criados automaticamente na pasta `csv/`  
-- Separador CSV: `;`  
-- Quebra de linha: `\r\n`  
-- Mensagens de erro exibidas via `AlertDialog`  
-- Consultas exibidas em `TextArea`  
-- Campos são limpos após cada operação  
-
----
