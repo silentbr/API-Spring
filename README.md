@@ -1,10 +1,8 @@
----
-
 # User Management API
 
-API REST desenvolvida com **Java e Spring Boot** para gerenciamento de usuários, seguindo boas práticas de **arquitetura em camadas**, **uso de DTOs** e **documentação com Swagger/OpenAPI**.
+API REST desenvolvida com **Java e Spring Boot** para gerenciamento de usuários, utilizando **PostgreSQL** como banco de dados relacional e seguindo boas práticas de **arquitetura em camadas**, **uso de DTOs** e **documentação com Swagger/OpenAPI**.
 
-O projeto foi desenvolvido com foco em **backend Java** e serve como base para evolução futura, como autenticação, autorização e regras de negócio mais complexas.
+O projeto foi desenvolvido com foco em **backend Java** e persistência de dados em ambiente real, servindo como base para evolução futura, como autenticação e autorização.
 
 ---
 
@@ -15,12 +13,12 @@ O projeto foi desenvolvido com foco em **backend Java** e serve como base para e
 * **Criar Usuário**: Cadastro de usuários via requisição HTTP
 * **Listar Usuários**: Retorna todos os usuários cadastrados
 * **Validação de Dados**: Validações de entrada com Jakarta Validation
-* **Persistência**: Armazenamento de dados usando Spring Data JPA
+* **Persistência em PostgreSQL**: Armazenamento de dados usando JPA + Hibernate
 
 ### 🔍 Consultas Disponíveis
 
-* **Listagem Geral**: Retorna usuários cadastrados no sistema
-* **Status da API**: Endpoint simples para verificar se a API está ativa
+* **Listagem Geral**: Retorna usuários persistidos no banco PostgreSQL
+* **Status da API**: Endpoint para verificação de disponibilidade da API
 
 ---
 
@@ -54,7 +52,8 @@ O projeto foi desenvolvido com foco em **backend Java** e serve como base para e
 │   │   │                   └── OpenApiConfiguration.java
 │   │   │
 │   │   └── resources/
-│   │       └── application.properties
+│   │       ├── application.properties
+│   │       └── schema.sql (opcional)
 │   │
 │   └── test/
 │
@@ -67,20 +66,23 @@ O projeto foi desenvolvido com foco em **backend Java** e serve como base para e
 
 1. A API utiliza **DTOs** para entrada e saída de dados
 2. Entidades JPA **não são expostas diretamente** ao cliente
-3. O ID do usuário é gerado automaticamente pelo sistema
-4. Campos de entrada passam por validação antes da persistência
+3. O banco de dados utilizado é **PostgreSQL**
+4. O ID do usuário é gerado automaticamente pelo banco
 5. Dados sensíveis (ex: senha) **não são retornados nas respostas**
 
 ---
 
-## 📚 Padrões e Conceitos Utilizados
+## 📚 Tecnologias e Ferramentas Utilizadas
 
-* DTO (Data Transfer Object)
-* Arquitetura em camadas
-* Injeção de dependência por construtor
+* Java
+* Spring Boot
+* Spring Web
 * Spring Data JPA
-* Hibernate ORM
-* OpenAPI / Swagger
+* Hibernate
+* PostgreSQL
+* DTO Pattern
+* Swagger / OpenAPI
+* Lombok
 * Jakarta Validation
 
 ---
@@ -88,9 +90,10 @@ O projeto foi desenvolvido com foco em **backend Java** e serve como base para e
 ## ▶️ Como Executar
 
 1. Clone o repositório
-2. Abra o projeto em uma IDE compatível com Java
-3. Execute a aplicação Spring Boot
-4. Acesse a documentação da API em:
+2. Configure o banco PostgreSQL no `application.properties`
+3. Crie o banco de dados
+4. Execute a aplicação Spring Boot
+5. Acesse a documentação da API em:
 
 ```
 http://localhost:8080/swagger-ui.html
@@ -102,19 +105,15 @@ http://localhost:8080/swagger-ui.html
 
 A API é documentada automaticamente com **Swagger (OpenAPI)**, permitindo:
 
-* Visualizar todos os endpoints
-* Ver exemplos de requisição e resposta
-* Testar a API diretamente pelo navegador
+* Visualizar endpoints
+* Testar requisições diretamente no navegador
+* Consultar schemas de request e response
 
 ---
 
 ## 💡 Observações Técnicas
 
-* Arquitetura organizada para facilitar manutenção e evolução
-* Uso de Streams para mapeamento Entity → DTO
-* Código escrito com foco em legibilidade e boas práticas
-* Projeto preparado para expansão com Spring Security
-
----
-
-
+* Persistência gerenciada pelo **Hibernate ORM**
+* Integração direta com **PostgreSQL**
+* Uso de Streams para conversão Entity → DTO
+* Projeto preparado para crescimento e novas funcionalidades
